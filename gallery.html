@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Horizon Relaxation Hotel & Spa</title>
+    <link rel="icon" href="./images/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack SDK -->
+</head>
+
+
+<style>
+p {
+	line-height: 1;
+}
+a {
+	color: crimson;
+	text-decoration: none;
+}
+img {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+}
+
+</style>
+
+<!--  -->
+<!-- Loader -->
+<div id="pageload"></div>
+<div class="text-center" id="paycon">
+    <i class="fa fa-xmark mright" id="mrright2" onclick="mrright2()"></i>
+    <h2 class="py-3">Confirm Payment</h2>
+<div class="borderr"></div>
+    <p id="errormsg" style="display: none; padding: 10px 10px; color: rgb(218, 72, 72); font-weight: 600;"></p>
+
+    <form id="payment-form">
+        <div class="mb-3"> 
+            <label class="form-label">Full Name</label>
+            <input type="text" id="full-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Confirm Email</label>
+            <input type="email" id="emailC" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Amount (₦)</label>
+            <input id="amount" type="text" style="color:green;" class="form-control" readonly required>
+        </div>
+        
+        <button type="button" onclick="payWithPaystack()" class="btn w-100" style="background-color: #cc8c2b; color: #fff;">Pay Now</button>
+    </form>
+    <p id="payment-response" class="mt-3"></p>
+</div>
+
+<div class="gorr text-center" id="gorr">
+    <div class="container gorrC">
+        <i class="fa fa-xmark mright" id="mrrr" onclick="mrright4()"></i>
+        <div class="">
+            <h1 class="gorrp" style="color: #fff;">Select your Preferred Choice</h1>
+            <div class="borderr"></div>
+            <div class="gorG">
+                <!-- Standard Room -->
+                <div class="gorrD standard-room" onclick="soption()" id="soption" style="cursor: pointer;">
+                    <img src="./images/hotelbg1.jpg" class="img-fluid" alt="Standard Room">
+                    <h3 class="my-2">Standard Room</h3>
+                    <p class="my-2" style="color: #c9a062;">Experience comfort and elegance with modern amenities and stylish decor for your perfect stay. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quae cumque laborum at similique. Sapiente optio velit architecto, iste odio excepturi quas labore libero a pariatur molestias placeat quasi officiis.</p>
+                    <button class="btn book-btn btn-secondary standard-btn" onclick="soption()">Book</button>
+                </div>
+
+                <!-- Guest House -->
+                <div class="gorrD goption guest-house" onclick="guestbook()" id="guestbook" style="cursor: pointer;">
+                    <img src="./images/pexels-amar-saleem-15661-70441.jpg" class="img-fluid" alt="Guest House">
+                    <h3 class="my-2">Guest House</h3>
+                    <p class="my-2">A luxurious getaway with spacious rooms, premium facilities, and a home-like ambiance for relaxation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro veniam est aut assumenda quibusdam suscipit, ducimus doloribus maxime aliquid. Molestiae fugit provident asperiores non quidem nemo vero nesciunt a sed.</p>
+                    <button class="btn book-btn btn-light guest-btn" onclick="guestbook()">Book</button>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="notsuccess bg-dark" id="notsuc">
+        <i class="fa fa-xmark mright" id="mrright" onclick="mrright()"></i>
+    <div class="notcon text-center">
+        <h2>Transaction not successful, Try again?</h2>
+        <img src="favicon-32x32.png" srcset="">
+    </div>
+    </div>
+<section id="standarddiv" class="py-5">
+    <div class="standardd">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+            <h2 class="text-center my-4">Select the Standard room of your choice</h2>
+            <div id="room-container" class="room-grid">
+        
+            </div>
+            <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+    </div>
+    </div>
+    </section>
+    <div id="guestHouseSection">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+              <div id="guestHouseContent" class="mt-5">
+                <h2 class="text-center my-4">Which do you prefer?</h2>
+                  <div class="room-grid" id="guests">
+
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+            </div>
+      </div>
+      <div id="selected-room" class="text-center">
+        <i class="fa fa-xmark" id="mrright3" onclick="mrright3()"></i>
+        <h4 class="mb-3">You have selected: <span id="room-name"></span></h4>
+        <p>Price: <span id="room-price"></span> per night</p>
+        <button class="btn btn-success" onclick="confirmBooking()">Proceed to Payment</button>
+    </div>
+<!--  -->
+
+<body>
+
+<div id="navbardis"></div>
+
+
+<div id="allb">
+<section id="divsContainer"></section>
+
+
+
+
+<section class="VelvetGallery">
+
+<main>
+    
+	<div id="gallery">
+        <figure>
+            <div>
+                <div>
+<img src="./images/logo.png" alt="">
+                </div>
+            </div>
+        </figure>
+        <figure>
+            <img src="./images/service2.jpg" alt="Event Center" title="Room Service">
+            <figcaption>WED, JAN 2025</figcaption>
+            <figcaption>Room Service</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/housekeep2.jpg" alt="Workers" title="Workers">
+            <figcaption>THUR, SEP 2024</figcaption>
+            <figcaption>Workers</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/volley.jpg" alt="Volley ball match" title="Volley ball Match">
+            <figcaption>THUR, JAN 2025</figcaption>
+            <figcaption>Volley ball Match</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/gymmmm.jpg" alt="Outdoor Gym" title="Outdoor Gym">
+            <figcaption>THUR, JAN 2025</figcaption>
+            <figcaption>Outdoor Gym</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/worker3.jpg" alt="Workers" title="Workers">
+            <figcaption>FRI, SEP 2024</figcaption>
+            <figcaption>Worker</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/pexels-anil-sharma-2149101452-30969851.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, DEC 2024</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/restaurant2.jpg" alt="Restaurant" title="Restaurant">
+            <figcaption>FRI, SEP 2024</figcaption>
+            <figcaption>Restaurant</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/football2.jpg" alt="Football Match" title="Football Match">
+            <figcaption>SAT, JUN 2024</figcaption>
+            <figcaption>Football Match</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/swimm.jpg" alt="Pool" title="Pool">
+            <figcaption>WED, AUG 2024</figcaption>
+            <figcaption>Woman in Pool</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/board2.jpg" alt="Board Meeting" title="Board Meeting">
+            <figcaption>MON, MAY 2024</figcaption>
+            <figcaption>Board Meeting</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/event4.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, AUG 2024</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/guest2.jpg" alt="Guest" title="Guest">
+            <figcaption>THUR, SEP 2024</figcaption>
+            <figcaption>Guests</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/standardR.jpg" alt="Standard" title="Standard">
+            <figcaption>Standard</figcaption>
+            <figcaption>Room</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/kids2.jpg" alt="Kids' play area" title="Kids' play area">
+            <figcaption>SAT, JUN 2023</figcaption>
+            <figcaption>Kids' play area</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/bartender.jpg" alt="Bartender" title="Bartender">
+            <figcaption>MON, JAN 2023</figcaption>
+            <figcaption>Bartender</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/service1.jpg" alt="Room service" title="Room service">
+            <figcaption>TUE, MAR 2023</figcaption>
+            <figcaption>Room service</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/wedding.jpg" alt="Wedding" title="Wedding">
+            <figcaption>WED, DEC 2023</figcaption>
+            <figcaption>Wedding Event</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/guestex2.jpg" alt="Guest House" title="Guest House">
+            <figcaption>SAT, DEC 2024</figcaption>
+            <figcaption>Guest House Exterior</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/swim.jpg" alt="Pool" title="Pool">
+            <figcaption>FRI, SEP 2024</figcaption>
+            <figcaption>Swimming Pool</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/football3.jpg" alt="Football" title="Football">
+            <figcaption>FRI, APR 2023</figcaption>
+            <figcaption>Football Match</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/resturant.jpg" alt="Restaurant" title="Restaurant">
+            <figcaption>Tue, SEP 2024</figcaption>
+            <figcaption>Restaurant</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/board3.jpg" alt="Board Meeting" title="Board Meeting">
+            <figcaption>MON, MAY 2024</figcaption>
+            <figcaption>Board Meeting</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/event2.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, Jul 2024</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/event5.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, AUG 2024</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/guestroom6.jpg" alt="Guest room" title="Guest room">
+            <figcaption>Guest</figcaption>
+            <figcaption>Room</figcaption>
+        </figure>
+        <figure>
+            <img src=".//images/exterior.jpg" alt="Guest House Exterior" title="Guest House Exterior">
+            <figcaption>TUE, FEB 2025</figcaption>
+            <figcaption>Guest House Exterior</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/pexels-markusspiske-2990639.jpg" alt="Sustainability Movement" title="Sustainability Movement">
+            <figcaption>FRI, NOV 2024</figcaption>
+            <figcaption>Sustainability Movement</figcaption>
+        </figure>
+        <figure>
+            <img src="./images//customer.jpg" alt="Customer Service" title="Customer Service">
+            <figcaption>FRI, MAY 2023</figcaption>
+            <figcaption>Customer Service</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/gymmm.jpg" alt="Event Center" title="Gym equipment">
+            <figcaption>WED, JAN 2023</figcaption>
+            <figcaption>Gym equipment</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/event6.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, NOV 2023</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/recep.jpg" alt="Reception" title="Reception">
+            <figcaption>TUE, FEB 2025</figcaption>
+            <figcaption>Reception</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/worker2.jpg" alt="Event Center" title="Event Center">
+            <figcaption>MON, JAN 2025</figcaption>
+            <figcaption>Receptionist</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/housekeep2.jpg" alt="Workers" title="Workers">
+            <figcaption>THUR, SEP 2024</figcaption>
+            <figcaption>Workers</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/pexels-amar-saleem-15661-70441.jpg" alt="Guest House Exterior" title="Guest House Exterior">
+            <figcaption>TUE, FEB 2025</figcaption>
+            <figcaption>Guest House Exterior</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/recep2.jpg" alt="Reception" title="Reception">
+            <figcaption>SUN, SEP 2023</figcaption>
+            <figcaption>Reception</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/worker1.jpg" alt="Workers" title="Workers">
+            <figcaption>THUR, SEP 2024</figcaption>
+            <figcaption>Worker</figcaption>
+        </figure>
+	</div>
+</main>
+
+
+<div class="py-5">
+    <i style="font-size: 30px; color: #cc8c2b;">Velvet Horizon Relaxation Hotel & Spa</i>
+</div>
+
+</section>
+    
+
+
+
+
+
+<div id="footer-section"></div>
+</div>
+        <!--  -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+  </script>
+<script src="./script.js"></script>
+<script src="./bootstrap/js/jquery.min.js"></script>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+    
+</script>
+
+</body>
+</html>
+

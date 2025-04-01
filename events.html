@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Horizon Relaxation Hotel & Spa</title>
+    <link rel="icon" href="./images/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack SDK -->
+</head>
+
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f8f9fa; color: #333; }
+    .section { padding: 60px 20px; max-width: 1200px; margin: auto; text-align: center; }
+
+        .video-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .video-card { position: relative; background: #000; border-radius: 3px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .video-card video { width: 100%; height: 250px; object-fit: cover; }
+        .video-caption { padding: 15px; text-align: left; background: rgba(0, 0, 0, 0.7); color: white; }
+        .booking-form { 
+            margin-top: 40px; 
+            text-align: left; 
+            background: #222; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(255,255,255,0.1); 
+            max-width: 600px; 
+            margin: auto; 
+        }
+        .booking-form label { 
+            font-weight: bold; 
+            display: block; 
+            margin: 10px 0 5px; 
+            color: #cc8c2b; 
+        }
+        .booking-form input, .booking-form select {
+            width: 100%; 
+            padding: 12px; 
+            margin: 5px 0 15px; 
+            border: 2px solid #cc8c2b; 
+            background: #333;
+            color: white;
+            border-radius: 5px; 
+            font-size: 16px;
+            transition: 0.3s ease-in-out;
+        }
+        .booking-form input:focus, .booking-form select:focus {
+            border-color: #e0a040;
+            outline: none;
+            box-shadow: 0 0 10px rgba(224, 160, 64, 0.7);
+        }
+        .booking-form button {
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(45deg, #cc8c2b, #b3741a);
+            color: white; 
+            font-size: 18px; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+        .booking-form button:hover {
+            background: linear-gradient(45deg, #e0a040, #cc8c2b);
+        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 5px; }
+        .grid-container img { width: 100%; height: 200px; object-fit: cover; }
+        .history { display: flex; gap: 20px; text-align: left; }
+        .history img { width: 50%; border-radius: 10px; }
+        .booking-form input, .booking-form select { width: 100%; padding: 10px; margin: 10px 0; }
+        .booking-form button { width: 100%; padding: 12px; background: #cc8c2b; color: white; border: none; cursor: pointer; }
+        @media (max-width: 768px) { .history { flex-direction: column; } .history img { width: 100%; } }
+</style>
+
+
+<!--  -->
+
+<div class="text-center" id="paycon">
+    <i class="fa fa-xmark mright" id="mrright2" onclick="mrright2()"></i>
+    <h2 class="py-3">Confirm Payment</h2>
+
+    <p id="errormsg" style="display: none; padding: 10px 10px; color: rgb(218, 72, 72); font-weight: 600;"></p>
+
+    <form id="payment-form">
+        <div class="mb-3"> 
+            <label class="form-label">Full Name</label>
+            <input type="text" id="full-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Confirm Email</label>
+            <input type="email" id="emailC" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Amount (₦)</label>
+            <input id="amount" type="text" style="color:green;" class="form-control" readonly required>
+        </div>
+        
+        <button type="button" onclick="payWithPaystack()" class="btn w-100" style="background-color: #cc8c2b; color: #fff;">Pay Now</button>
+    </form>
+    <p id="payment-response" class="mt-3"></p>
+</div>
+
+<div class="gorr text-center" id="gorr">
+    <div class="container gorrC">
+        <i class="fa fa-xmark mright" id="mrrr" onclick="mrright4()"></i>
+        <div class="">
+            <h1 class="gorrp" style="color: #fff;">Select your Preferred Choice</h1>
+            <div class="borderr"></div>
+            <div class="gorG">
+                <!-- Standard Room -->
+                <div class="gorrD standard-room" onclick="soption()" id="soption" style="cursor: pointer;">
+                    <img src="./images/hotelbg1.jpg" class="img-fluid" alt="Standard Room">
+                    <h3 class="my-2">Standard Room</h3>
+                    <p class="my-2" style="color: #c9a062;">Experience comfort and elegance with modern amenities and stylish decor for your perfect stay. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quae cumque laborum at similique. Sapiente optio velit architecto, iste odio excepturi quas labore libero a pariatur molestias placeat quasi officiis.</p>
+                    <button class="btn book-btn btn-secondary standard-btn" onclick="soption()">Book</button>
+                </div>
+
+                <!-- Guest House -->
+                <div class="gorrD goption guest-house" onclick="guestbook()" id="guestbook" style="cursor: pointer;">
+                    <img src="./images/pexels-amar-saleem-15661-70441.jpg" class="img-fluid" alt="Guest House">
+                    <h3 class="my-2">Guest House</h3>
+                    <p class="my-2">A luxurious getaway with spacious rooms, premium facilities, and a home-like ambiance for relaxation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro veniam est aut assumenda quibusdam suscipit, ducimus doloribus maxime aliquid. Molestiae fugit provident asperiores non quidem nemo vero nesciunt a sed.</p>
+                    <button class="btn book-btn btn-light guest-btn" onclick="guestbook()">Book</button>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="notsuccess bg-dark" id="notsuc">
+        <i class="fa fa-xmark mright" id="mrright" onclick="mrright()"></i>
+    <div class="notcon text-center">
+        <h2>Transaction not successful, Try again?</h2>
+        <img src="favicon-32x32.png" srcset="">
+    </div>
+    </div>
+<section id="standarddiv" class="py-5">
+    <div class="standardd">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+            <h2 class="text-center my-4">Select the Standard room of your choice</h2>
+            <div id="room-container" class="room-grid">
+        
+            </div>
+            <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+    </div>
+    </div>
+    </section>
+    <div id="guestHouseSection">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+              <div id="guestHouseContent" class="mt-5">
+                <h2 class="text-center my-4">Which do you prefer?</h2>
+                  <div class="room-grid" id="guests">
+
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+            </div>
+      </div>
+      <div id="selected-room" class="text-center">
+        <i class="fa fa-xmark" id="mrright3" onclick="mrright3()"></i>
+        <h4 class="mb-3">You have selected: <span id="room-name"></span></h4>
+        <p>Price: <span id="room-price"></span> per night</p>
+        <button class="btn btn-success" onclick="confirmBooking()">Proceed to Payment</button>
+    </div>
+<!--  -->
+
+
+<body>
+
+<div id="navbardis"></div>
+
+
+<div id="allb">
+<section id="divsContainer"></section>
+
+
+<section class="carou">
+    <div class="carou-container">
+        <div class="carou-item active">
+            <img src="./images/wedding.jpg" alt="Event 1">
+            <div class="caption">
+            <h1>Luxury Weddings</h1>
+            <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+            </div>
+        </div>
+        <div class="carou-item">
+            <img src="./images/banquet.jpg" alt="Event 3">
+            <div class="caption">
+                <h1>Banquet Celebrations</h1>
+                <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                </div>
+        </div>
+        <div class="carou-item">
+            <img src="./images/gala.jpg" alt="Event 4">
+            <div class="caption">
+                <h1>Gala Nights</h1>
+                <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+            </div>
+        </div>
+        <div class="carou-item">
+            <img src="./images/private.jpg" alt="Event 5">
+            <div class="caption">
+                <h1>Private Parties</h1>
+                <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+            </div>
+        </div>
+        <div class="carou-item">
+            <img src="./images/grandcon.jpg" alt="Event 2">
+            <div class="caption">
+                <h1>Corporate Conferences</h1>
+                <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                </div>
+        </div>
+        <div class="carou-item">
+            <img src="./images/semi.jpg" alt="Event 6">
+            <div class="caption">
+                <h1>Workshops & Seminars</h1>
+                <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+    <section class="section"
+    data-aos="fade-up"
+    data-aos-easing="linear"
+    data-aos-duration="1100">
+        <h2>Grand & Elegant Halls</h2>
+        <div class="borderr"></div>
+        <p>Explore our luxurious event halls, each offering a unique ambiance for your special occasions.</p>
+        <div class="video-container">
+            <div class="video-card">
+         <img src="./images/eventex.jpg" width="100%" alt="">
+                <div class="video-caption">
+                    <h3>Skyline Banquet Hall</h3>
+                    <p>A spacious hall with breathtaking skyline views, ideal for corporate gatherings and galas.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <img src="./images/event.jpg" width="100%" alt="">
+                <div class="video-caption">
+                    <h3>Velvet Garden Hall</h3>
+                    <p>A serene garden-inspired hall, blending nature with elegance for an unforgettable experience.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <img src="./images/event11.jpg" width="100%" alt="">
+                <div class="video-caption">
+                    <h3>Royal Ballroom</h3>
+                    <p>An exquisite venue with crystal chandeliers and a grand atmosphere, perfect for upscale events.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <img src="./images/event9.jpg" width="100%" alt="">
+                <div class="video-caption">
+                    <h3>Imperial Conference Hall</h3>
+                    <p>A modern and well-equipped hall designed for high-profile conferences and business meetings.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <section class="book" style="margin: 60px 0px;">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-5 align-self-center mt-5">
+                    <h1 style="color: #cc8c2b;">Book Events</h1>
+                    <i>Select your prefered hall nd Event and our tem will reach out to you or you can contact our event team below for more infos</i>
+                    <p style="padding-top: 10px; font-weight: 700; color: #b3741a;">Email: events@velvet.com</p>
+                    <p style="padding-top: 10px; font-weight: 700; color: #b3741a;">Phone: +1234567890, Openning Hours: 7am - 9pm</p>
+                    </div>
+            <div class="col-md-5">
+                <form class="booking-form" id="bookingform">
+                    <p id="contactError" style="display: none; text-align: center; padding: 10px 10px; color: rgb(218, 72, 72); font-weight: 600;"></p>
+                    <input type="text" id="Ename" placeholder="Your Name" required>
+                    <input type="email" id="Eemail" placeholder="Your Email" required>
+                    <label for="hall">Select Hall</label>
+                    <select id="Ehall" required>
+                        <option value="">Choose a hall</option>
+                        <option value="royal-ballroom">Royal Ballroom</option>
+                        <option value="skyline-banquet">Skyline Banquet Hall</option>
+                        <option value="velvet-garden">Velvet Garden Hall</option>
+                        <option value="imperial-conference">Imperial Conference Hall</option>
+                    </select>
+                    <select id="Eevent" required>
+                        <option value="">Select Event Type</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="conference">Conference</option>
+                        <option value="banquet">Banquet</option>
+                    </select>
+                    <input type="date" id="Edate" required>
+                    <button class="btn" id="Eclick">Book Now</button>
+                </form>
+            </div>
+        </div>     
+        </div>
+        </section>
+
+    
+    <div class="borderr"></div>
+
+<section class="section">
+    <div class="grid-container">
+        <img src="./images/event.jpg" alt="Event Hall">
+        <img src="./images/event2.jpg" alt="Event Setup">
+        <img src="./images/event3.jpg" alt="Elegant Decor">
+        <img src="./images/event4.jpg" alt="Luxury Seating">
+        <img src="./images/event5.jpg" alt="Grand Hall">
+        <img src="./images/event6.jpg" alt="Exclusive Setup">
+        <img src="./images/event7.jpg" alt="VIP Section">
+        <img src="./images/event8.jpg" alt="Event Lighting">
+        <img src="./images/pexels-amar-saleem-15661-70441.jpg" alt="Banquet Setting">
+        <img src="./images/recep3.jpg" alt="Premium Service">
+        <img src="./images/recep.jpg" alt="Luxury Arrangements">
+        <img src="./images/event9.jpg" alt="Event Ambiance">
+        <img src="./images/event10.jpg" alt="High-Class Setup">
+        <img src="./images/event11.jpg" alt="Perfect Venue">
+        <img src="./images/event13.jpg" alt="Exclusive Banquet">
+    </div>
+</section>
+
+
+
+<!-- Loader -->
+<div id="pageload"></div>
+
+<div id="contactPopup">
+    <div class="popup-content" id="popD">
+        <i class="fa fa-xmark close-popup" onclick="closePopup()"></i>
+        <h2>Message Received!</h2>
+        <div class="borderr"></div>
+        <p>We've got your message, we'll contact you ASAP!</p>
+        <p style="color: #b07b1f;">If you have any further questions contact us +1234567890</p>
+    </div>
+</div>
+
+<div id="footer-section"></div>
+</div>
+        <!--  -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+  </script>
+<script src="./script.js"></script>
+<script src="./bootstrap/js/jquery.min.js"></script>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+
+<script>
+</script>
+
+</body>
+</html>
+

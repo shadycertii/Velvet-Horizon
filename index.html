@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Horizon Relaxation Hotel & Spa</title>
+    <link rel="icon" href="./images/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack SDK -->
+</head>
+
+<style>
+    .nav-link {
+    color: #333;
+    text-decoration: none;
+    padding: 10px 20px;
+    transition: color 0.3s ease;
+}
+
+.nav-link.active {
+    border-top: 2px solid #cc8c2b;
+    border-bottom: 2px solid #cc8c2b;
+    font-weight: bold;
+} 
+
+.btn-book {
+            background-color: #c9a062;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .btn-book:hover {
+            background-color: #cc8c2b;
+            color: #fff;
+        }
+
+        </style>
+
+
+</style>
+
+
+<div class="text-center" id="paycon">
+    <i class="fa fa-xmark mright" id="mrright2" onclick="mrright2()"></i>
+    <h2 class="py-3">Confirm Payment</h2>
+<div class="borderr"></div>
+    <p id="errormsg" style="display: none; padding: 10px 10px; color: rgb(218, 72, 72); font-weight: 600;"></p>
+
+    <form id="payment-form">
+        <div class="mb-3"> 
+            <label class="form-label">Full Name</label>
+            <input type="text" id="full-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Confirm Email</label>
+            <input type="email" id="emailC" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Amount (₦)</label>
+            <input id="amount" type="text" style="color:green;" class="form-control" readonly required>
+        </div>
+        
+        <button type="button" onclick="payWithPaystack()" class="btn w-100" style="background-color: #cc8c2b; color: #fff;">Pay Now</button>
+    </form>
+    <p id="payment-response" class="mt-3"></p>
+</div>
+
+<div class="gorr text-center" id="gorr">
+    <div class="container gorrC">
+        <i class="fa fa-xmark mright" id="mrrr" onclick="mrright4()"></i>
+        <div class="">
+            <h1 class="gorrp" style="color: #fff;">Select your Preferred Choice</h1>
+            <div class="borderr"></div>
+            <div class="gorG">
+                <!-- Standard Room -->
+                <div class="gorrD standard-room" onclick="soption()" id="soption" style="cursor: pointer;">
+                    <img src="./images/hotelbg1.jpg" class="img-fluid" alt="Standard Room">
+                    <h3 class="my-2">Standard Room</h3>
+                    <p class="my-2" style="color: #c9a062;">Experience comfort and elegance with modern amenities and stylish decor for your perfect stay. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quae cumque laborum at similique. Sapiente optio velit architecto, iste odio excepturi quas labore libero a pariatur molestias placeat quasi officiis.</p>
+                    <button class="btn book-btn btn-secondary standard-btn" onclick="soption()">Book</button>
+                </div>
+
+                <!-- Guest House -->
+                <div class="gorrD goption guest-house" onclick="guestbook()" id="guestbook" style="cursor: pointer;">
+                    <img src="./images/pexels-amar-saleem-15661-70441.jpg" class="img-fluid" alt="Guest House">
+                    <h3 class="my-2">Guest House</h3>
+                    <p class="my-2">A luxurious getaway with spacious rooms, premium facilities, and a home-like ambiance for relaxation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro veniam est aut assumenda quibusdam suscipit, ducimus doloribus maxime aliquid. Molestiae fugit provident asperiores non quidem nemo vero nesciunt a sed.</p>
+                    <button class="btn book-btn btn-light guest-btn" onclick="guestbook()">Book</button>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="notsuccess bg-dark" id="notsuc">
+        <i class="fa fa-xmark rightntt" id="mrright" onclick="mrright()"></i>
+    <div class="notcon text-center">
+        <h2>Transaction not successful, Try again?</h2>
+        <img src="favicon-32x32.png" srcset="">
+    </div>
+    </div>
+<section id="standarddiv" class="py-5">
+    <div class="standardd">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+            <h2 class="text-center my-4">Which do you prefer?</h2>
+            <div id="room-container" class="room-grid">
+        
+            </div>
+            <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+    </div>
+    </div>
+    </section>
+    <div id="guestHouseSection">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+              <div id="guestHouseContent" class="mt-5">
+                <h2 class="text-center my-4">Which do you prefer?</h2>
+                  <div class="room-grid" id="guests">
+
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+            </div>
+      </div>
+<!--  -->
+      <div id="navbardis"></div>
+
+            <div id="allb">
+
+<div class="first-container" id="container">
+
+
+    <ul class="background-objects">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h1>Welcome To Velvet Horizon (Relaxation & Spa)</h1>
+    <p>Affordable luxury and comfort.</p>
+</div>
+
+<div class="bookingdiv" data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <p style="text-align: center;" id="erroraval">Check to see if rooms are available</p>
+<div class="booking-bar">
+    <div>
+      <label for="checkin">CHECK-IN</label><br>
+      <input type="date" id="checkin">
+    </div>
+    <div>
+      <label for="checkout">CHECK-OUT</label><br>
+      <input type="date" id="checkout">
+    </div>
+    <div>
+      <label for="rooms">ROOMS</label><br>
+      <select id="rooms">
+        <option>Guest House</option>
+        <option>Deluxe</option>
+        <option>Standard</option>
+      </select>
+    </div>
+    <div>
+      <button onclick="checkaval()">CHECK AVAILABILITY</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div id="cookie-banner" class="cookie-container">
+    <p>
+        This website uses cookies to ensure you get the best experience. 
+        <a href="./privacy-policy.html">Learn more</a>
+    </p>
+    <button id="accept-cookies">Accept</button>
+</div> -->
+
+<div id="cook"></div>
+
+
+<div class="discount-ribbon">
+    <a href="./recreateservice.html">Get Discount</a>
+</div>
+
+
+
+
+
+<section id="whatweoffer"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+<div class="container py-5" id="container whatweoffer"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <div class="row g-4 text-center py-5">
+        <div class="col-md-3">
+            <div class="feature-box" style="color: navy;
+            margin-bottom: 15px;">
+                <i class="fas fa-bolt"></i>
+                <h3>24hrs Power</h3>
+            </div>
+        </div>
+        <div class="col-md-3"style="font-size: 2.5rem;
+        color: navy;
+        margin-bottom: 15px;">
+            <div class="feature-box">
+                <i class="fas fa-wifi"></i>
+                <h3>Internet Connections</h3>
+            </div>
+        </div>
+        <div class="col-md-3"style="font-size: 2.5rem;
+        color: navy;
+        margin-bottom: 15px;">
+            <div class="feature-box">
+                <i class="fas fa-couch"></i>
+                <h3>Luxury Ambiance</h3>
+            </div>
+        </div>
+        <div class="col-md-3"
+        style="font-size: 2.5rem;
+            color: navy;
+            margin-bottom: 15px;">
+            <div class="feature-box">
+                <i class="fas fa-utensils"></i>
+                <h3>Great Food</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="borderr mb-3"></div>
+</section>
+
+
+
+<div class="slider owl-carousel">
+    <div class="cardd">
+      <div class="img">
+        <img src="./images/spa2.jpg" alt="Spa">
+    </div>
+<div class="content">
+        <div class="title">
+            <h3>Spa & Wellness</h3>
+        </div>
+</div>
+</div>
+<div class="cardd">
+      <div class="img">
+<img src="./images/swim.jpg" alt=""></div>
+<div class="content">
+<div class="title">
+    <h3>Swimming Pool</h3>
+</div>
+</div>
+</div>
+<div class="cardd">
+      <div class="img">
+<img src="./images/resturant2.jpg" alt=""></div>
+<div class="content">
+<div class="title">
+    <h3>Exclusive Lounge & Bar</h3>
+</div>
+</div>
+</div>
+<div class="cardd">
+<div class="img">
+<img src="./images/gymm.jpg" alt=""></div>
+<div class="content">  
+<div class="title">
+<h3>Gymnasium</h3>
+</div>
+</div>
+</div>
+<div class="cardd">
+<div class="img">
+<img src="./images/kids.jpg" alt=""></div>
+<div class="content">  
+<div class="title">
+<h3>Kids’ Play Area</h3>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<section id="about"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <div class="container py-5" id="about">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2>Discover Luxury Like Never Before</h2>
+                <p>
+                    At Velvet Horizon Hotel, we pride ourselves on delivering an exceptional experience for every guest. 
+                    Enjoy 24-hour power, blazing-fast internet, and a luxurious ambiance that will make your stay unforgettable.
+                </p>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="./images/hotel2.jpg" alt="Luxury Hotel" class="img-fluid rounded">
+      </div>
+        </div>
+    </div>
+    
+</section>
+
+
+
+<div class="content">
+
+	<h1 style="color: #c9a062; padding: 30px; text-align: center;"><i class="fa fa-utensils pe-3"></i> Horizon Bites</h1>
+
+	<address>
+		<p>
+			<svg viewBox="0 -100 500 512" width="20" title="map-marker-alt">
+				<path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z" transform="rotate(-20)" />
+			</svg>
+			123 Luxury street &middot; Big town, CA
+		</p>
+
+		<a href="./conser.html">
+			<svg viewBox="-200 50 600 600" width="20" title="phone-alt">
+				<path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z" transform="rotate(25)" />
+			</svg>
+		Hotel hotline: 123-456-789
+		</a>
+
+	</address>
+
+	<ul class="boxes"
+    data-aos="fade-right"
+data-aos-easing="linear"
+data-aos-duration="1700">
+
+		<li class="box">
+			<h2>Local / African Dish</h2>
+			<p class="prices"><span>Comes with soft drinks of choice</span></p>
+			<dl>
+				<dt>Amala</dt>
+				<dd class="description">
+                    <p>Soft, earthy Nigerian staple made from yam or plantain flour.                        .</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 5000 Per Meal</p>
+				</dd>
+				<dt>Eba</dt>
+				<dd class="description">
+					<p>Cassava-based dish, slightly grainy, perfect with soups.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 5000 Per Meal</p>
+				</dd>
+				<dt>Egusi Soup</dt>
+				<dd class="description">
+					<p>Melon seed soup, rich, flavorful, and protein-packed</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 3000 Per Soup</p>
+				</dd>
+                <dt>Ogbono Soup</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 4000 Per Soup</p>
+				</dd>
+                <dt>Fufu</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 2000 Per Soup</p>
+				</dd>
+			</dl>
+            <p class="prices"><span>Broken plate<em>&#8358 4000</em></span></p>
+		</li>
+        <li class="box">
+			<h2>Casual</h2>
+			<p class="prices"><span>Comes with soft drinks of choice</span></p>
+			<dl>
+				<dt>Jollof Rice</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 4000 Per Meal</p>
+				</dd>
+				<dt>Baken Egg and Cheese</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, reprehenderit!</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 6000 Per Meal</p>
+				</dd>
+				<dt>Fried Rice</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 7000 Per Meal</p>
+				</dd>
+                <dt>Pasta</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 3000 Per Soup</p>
+				</dd>
+			</dl>
+            <p class="prices"><span>Broken plate<em>&#8358 4000</em></span></p>
+		</li>
+        <li class="box">
+			<h2>Protein</h2>
+			<dl>
+				<dt>Full chicken</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 10000 Per serving</p>
+				</dd>
+				<dt>Turkey</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 9000 Each Piece</p>
+				</dd>
+                <dt>Shrimp</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 7000 Per Piece</p>
+				</dd>
+                <dt>Beef</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 4000 Per Piece</p>
+				</dd>
+                <dt>Crabs</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 15000 Per Piece</p>
+				</dd>
+                <dt>Fish/ fried fish</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 2000 Per Piece</p>
+				</dd>
+                <dt>Full Cat fish</dt>
+				<dd class="description">
+                    <p>Lorem ipsum dolor sit amet consectetur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 6000 Per Piece</p>
+				</dd>
+			</dl>
+		</li>
+
+		<li class="box">
+			<h2>Horizon Drinks/Alcohol</h2>
+			<p class="prices"><span>Shots for each<em>&#8358 3000</em></span></span></p>
+			<dl>
+                <dt>Dom Pérignon Vintage</dt>
+				<dd class="description">
+					<p>A classic champagne with rich flavors, priced around. </p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 35000 Per Bottle</p>
+				</dd>
+                <dt>Krug Grande Cuvée </dt>
+				<dd class="description">
+					<p>Known for its complexity, typically costs</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 567000 Per Bottle</p>
+				</dd>
+                <dt>Louis Roederer Cristal </dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur. </p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 20000 Per Bottle</p>
+				</dd>
+                <dt>Opus One</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 30000 Per Bottle</p>
+				</dd>
+                <dt>Veuve Clicquot La Grande Dame </dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur. </p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 75000 Per Bottle</p>
+				</dd>
+				<dt>Juglar Cuvée 1820 - <span style="color: #c9a062;">Most Expensive</span> </dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos, aspernatur non! </p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 1567000 Per Bottle</p>
+				</dd>
+				<dt>Latte</dt>
+				<dd class="description">
+					<p>Espresso with steamed milk, and sometimes a little art on top. </p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 17000 Per Bottle</p>
+				</dd>
+				<dt>Mocha</dt>
+				<dd class="description">
+					<p>Espresso with steamed chocolate milk and whipped cream. Also available with white chocolate milk.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 10000 Per Bottle</p>
+				</dd>
+				<dt>Americano</dt>
+				<dd class="description">
+					<p>1 shot espresso, two shots hot water.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 6000 Per Bottle</p>
+				</dd>
+			</dl>
+		</li>
+
+		<li class="box">
+			<h2>Tea</h2>
+			<p class="tip">Served to brave people in our notorious antique tea cups.</p>
+			<p class="prices"><span>Per Cup<em>&#8358 2000</em></span> <span class="note"><em>&#8358 5000</em>if you break the cup</span></p>
+			<dl>
+				<dt>Earl Grey </dt>
+				<dd class="description">
+					<p>Black tea fragranced with bergamot.</p>
+				</dd>
+				<dt>Ginger Hibiscus</dt>
+				<dd class="description">
+					<p>Floral, tart, and spicy. Caffeine free.</p>
+				</dd>
+				<dt>Cascade Green</dt>
+				<dd class="description">
+					<p>A blend of green teas hand selected by our master teamaker.</p>
+				</dd>
+				<dt>Chamomile</dt>
+				<dd class="description">
+					<p>Soothing and slightly sweet. Try it with honey! Caffeine free.</p>
+				</dd>
+			</dl>
+		</li>
+
+		<li class="box">
+			<h2>Extras</h2>
+
+			<dl>
+                <p class="tip py-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt?</p>
+				
+                <dt>Short bread</dt>
+                <dd class="description">
+					<p>Creamy cinnamony goodness made from scratch with our founder Mallory's prizewinning recipe.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 2500</p>
+				</dd>
+				<dt>Oatmeal Cookie</dt>
+				<dd class="description">
+					<p>Packed with rolled oats, raisins, and cranberries, these monster cookies are (almost) good for ya!</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 1500</p>
+				</dd>
+				<dt>Mixed Berry Muffins</dt>
+				<dd class="description">
+					<p>Filled with the best berries of the season and topped with a crumb crust. </p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 5000</p>
+				</dd>
+				<dt>Croissant</dt>
+				<dd class="description">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum omnis cumque pariatur.</p>
+                    <p style="color: aquamarine;" class="py-2">&#8358 8000</p>
+				</dd>
+			</dl>
+		</li>
+
+	</ul>
+
+	<table class="hours">
+		<thead>
+			<tr>
+				<th colspan="2">
+					<svg width="40" viewBox="0 0 800 800">
+						<g>
+							<g>
+								<g>
+									<g>
+										<g>
+											<path d="M340.261,358.231c17.896,0,33.647-8.998,43.067-22.706h70.971c16.318,0,29.548-13.219,29.548-29.537       c0-16.285-13.229-29.537-29.548-29.537h-70.981c-9.42-13.686-25.172-22.683-43.056-22.683c-0.278,0-0.533,0.089-0.8,0.089       l-64.706-91.065c-9.431-13.252-27.893-16.418-41.189-6.943c-13.297,9.442-16.418,27.871-6.976,41.201l64.761,91.11       c-2.044,5.588-3.333,11.531-3.333,17.84C288.03,334.87,311.402,358.231,340.261,358.231z"></path>
+										</g>
+									</g>
+								</g>
+								<g>
+									<g>
+										<g>
+											<path d="M273.034,654.322c-28.337-19.317-57.252-56.363-43.412-125.157h37.102c6.598,0,12.585-3.91,15.24-9.941       c2.622-6.099,1.4-13.119-3.099-17.962l-96.964-104.029c-3.144-3.366-7.531-5.266-12.164-5.266       c-4.599,0-8.986,1.911-12.13,5.266L60.655,501.262c-4.499,4.843-5.721,11.874-3.077,17.962       c2.655,6.031,8.631,9.941,15.196,9.941h34.824c3.021,11.742,40.246,147.407,156.86,151.361       c6.376,0.212,12.13-3.81,14.119-9.875S278.311,657.943,273.034,654.322z"></path>
+										</g>
+									</g>
+								</g>
+								<g>
+									<g>
+										<g>
+											<path d="M340.261,0C171.271,0,34.272,136.998,34.272,305.989c0,51.142,12.708,99.252,34.891,141.62l58.33-62.584       c-6.998-18.762-11.675-38.635-13.53-59.33h26.604c10.875,0,19.684-8.798,19.684-19.695c0-10.875-8.809-19.695-19.684-19.695       h-26.527c9.476-109.594,96.942-197.072,206.537-206.547v26.549c0,10.897,8.809,19.695,19.684,19.695       c10.886,0,19.695-8.798,19.695-19.695V79.757c109.584,9.475,197.072,96.953,206.537,206.547h-26.538       c-10.875,0-19.684,8.82-19.684,19.695c0,10.897,8.809,19.695,19.684,19.695h26.538       c-9.465,109.617-96.965,197.072-206.537,206.547v-26.538c0-10.896-8.809-19.694-19.695-19.694       c-10.875,0-19.684,8.798-19.684,19.694v26.427c-3.566-0.355-7.143-0.699-10.664-1.188c-0.044,0.101-0.044,0.211-0.089,0.3       c-7.576,17.263-24.46,28.293-43.1,28.293h-10.32c-0.533,16.529,2.566,30.726,9.109,42.867       c23.96,6.032,48.91,9.586,74.736,9.586c169.002,0,306.012-136.976,306.012-306C646.272,136.998,509.263,0,340.261,0z"></path>
+										</g>
+									</g>
+								</g>
+							</g>
+						</g>
+					</svg>
+					Hours
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Mon. - Fri.</td>
+				<td>6 a.m. - 11 p.m.</td>
+			</tr>
+			<tr>
+				<td>Sat. - Sun.</td>
+				<td>6 a.m. - 9 p.m.</td>
+			</tr>
+		</tbody>
+	</table>
+<hr>
+    <a href="./recreateservice.html" class="btn" style="border-radius: 0px; background-color: #cc8c2b; float: right; margin-bottom: 15px; color: #fff;">More details...</a>
+
+</div>
+
+
+
+<section class="VelvetGallery"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <i class="text-center VelvetGalleryi py-3" style="color: #cc8c2b;">Gallery</i>
+
+    
+    
+    <main>
+        <div id="gallery">
+                    <figure>
+                <div>
+                    <div>
+    <img src="./images/logo.png" alt="">
+                    </div>
+                </div>
+            </figure>
+        <figure>
+            <img src="./images/service2.jpg" alt="Event Center" title="Room Service">
+            <figcaption>WED, JAN 2025</figcaption>
+            <figcaption>Room Service</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/housekeep2.jpg" alt="Workers" title="Workers">
+            <figcaption>THUR, SEP 2024</figcaption>
+            <figcaption>Workers</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/volley.jpg" alt="Volley ball match" title="Volley ball Match">
+            <figcaption>THUR, JAN 2025</figcaption>
+            <figcaption>Volley ball Match</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/gymmmm.jpg" alt="Outdoor Gym" title="Outdoor Gym">
+            <figcaption>THUR, JAN 2025</figcaption>
+            <figcaption>Outdoor Gym</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/worker3.jpg" alt="Workers" title="Workers">
+            <figcaption>FRI, SEP 2024</figcaption>
+            <figcaption>Worker</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/pexels-anil-sharma-2149101452-30969851.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, DEC 2024</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/restaurant2.jpg" alt="Restaurant" title="Restaurant">
+            <figcaption>FRI, SEP 2024</figcaption>
+            <figcaption>Restaurant</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/football2.jpg" alt="Football Match" title="Football Match">
+            <figcaption>SAT, JUN 2024</figcaption>
+            <figcaption>Football Match</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/swimm.jpg" alt="Pool" title="Pool">
+            <figcaption>WED, AUG 2024</figcaption>
+            <figcaption>Woman in Pool</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/board2.jpg" alt="Board Meeting" title="Board Meeting">
+            <figcaption>MON, MAY 2024</figcaption>
+            <figcaption>Board Meeting</figcaption>
+        </figure>
+        <figure>
+            <img src="./images/event4.jpg" alt="Event Center" title="Event Center">
+            <figcaption>SAT, AUG 2024</figcaption>
+            <figcaption>Event Center</figcaption>
+        </figure>
+            <figure class="py-2 text-right" style="width: 100%; text-align: right;align-self: center; border: 6px solid #cc8c2b;">
+                <a href="./gallery.html" class="btn" style=" border-radius: 0px; font-size: 23px; font-weight: 900; padding: 25px; color: #cc8c2b;"><i>View More...</i></a>
+            </figure>
+        </div>
+    </main>
+    
+    </section>
+
+
+
+
+<section data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <div class="container py-5" id="about">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center">
+                <img src="./images/room1.jpg" alt="Luxury Hotel" class="img-fluid rounded">
+      </div>
+            <div class="col-md-6">
+                <h3 class="pt-2" style="text-align: left;"><i class="fa fa-bed"></i> Experience Unparalleled Comfort</h3>
+                <p>
+                    Our hotel is designed to make your stay both luxurious and memorable. 
+                    Indulge in fine dining, world-class services, and exquisite room designs that make every moment special.
+                </p>
+                <i style="color: #cc8c2b;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam laudantium voluptates cumque vel neque voluptate, porro iste, perferendis assumenda voluptatem similique corporis tenetur! Reprehenderit magnam magni alias necessitatibus fugiat, porro dolore molestias saepe iste voluptate animi eaque voluptatum laborum modi sit quis distinctio voluptatem odit praesentium similique doloremque debitis! Vero?</i>
+                <button class="btn my-4" style="color: #fff; background: #cc8c2b; width: 100%;" onclick="soption()">Book Now</button>
+            </div>
+        </div>
+    </div>    
+</section>
+
+<section id="rooms" 
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+
+<div class="container gallery-section" id="rooms" style="margin-bottom: 100px;">
+    <h2 class="gallery-title">Standard Room Photos</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 roomsec">
+        <div class="col">
+            <img src="./images/room2.jpg" alt="Photo 1" class="gallery-img item-1">
+        </div>
+        <div class="col">
+            <img src="./images/room3.jpg" alt="Photo 2" class="gallery-img item-2">
+        </div>
+        <div class="col">
+            <img src="./images/room4.jpg" alt="Photo 3" class="gallery-img item-3">
+        </div>
+        <div class="col">
+        <img src="./images/room7.jpg" alt="Photo 4" class="gallery-img item-4">
+</div>
+    </div>
+    <div style="text-align: center;padding-top: 50px;">
+        <button class="view-more-btn" onclick="loadGallery('gallery1')">View More....</button>
+    </div>
+</div>
+</section>
+<section>
+    <div class="fullscreen-gallery" id="fullscreenGallery">
+        <button class="close-btn" onclick="closeGallery()">×</button>
+        <div class="container-fluid">
+            <div class="row" id="galleryContent"></div>
+        </div>
+    </div>
+</section>
+
+
+
+    <section class="carou"
+    data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+        <h2>Event Center</h2>
+        <div class="borderr"></div> 
+               <div class="carou-container">
+            <div class="carou-item active">
+                <img src="./images/wedding.jpg" alt="Event 1">
+                <div class="caption">
+                <h1>Luxury Weddings</h1>
+                <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                </div>
+            </div>
+            <div class="carou-item">
+                <img src="./images/banquet.jpg" alt="Event 3">
+                <div class="caption">
+                    <h1>Banquet Celebrations</h1>
+                    <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                    </div>
+            </div>
+            <div class="carou-item">
+                <img src="./images/gala.jpg" alt="Event 4">
+                <div class="caption">
+                    <h1>Gala Nights</h1>
+                    <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                </div>
+            </div>
+            <div class="carou-item">
+                <img src="./images/private.jpg" alt="Event 5">
+                <div class="caption">
+                    <h1>Private Parties</h1>
+                    <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                </div>
+            </div>
+            <div class="carou-item">
+                <img src="./images/grandcon.jpg" alt="Event 2">
+                <div class="caption">
+                    <h1>Corporate Conferences</h1>
+                    <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                    </div>
+            </div>
+            <div class="carou-item">
+                <img src="./images/semi.jpg" alt="Event 6">
+                <div class="caption">
+                    <h1>Workshops & Seminars</h1>
+                    <i style="color: #cc8c2b;"> - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus facilisis felis et metus luctus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, beatae voluptate doloribus tempora saepe pariatur voluptatem nam expedita blanditiis nostrum?</i>
+                </div>
+            </div>
+        </div>
+     
+        <div class="py-5 text-center container">
+            <i style="color: #cc8c2b;">Check out more info about velvet's event center, Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, cumque ab dolor ipsam deserunt numquam officia hic rerum quibusdam repellat error repellendus architecto, magni minima cupiditate omnis ratione nulla neque commodi labore iste. Sint minus aperiam, architecto ratione quis quos quidem commodi molestias obcaecati nostrum corrupti vero. Maiores, sit nesciunt! Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias vitae quam quaerat, exercitationem voluptates, voluptatibus voluptatum dolorum delectus tenetur, rerum itaque repellendus aliquam. Quibusdam numquam quidem laudantium quae hic et veritatis necessitatibus, doloribus nemo cum omnis sint blanditiis cumque tempore reiciendis magni possimus at nesciunt. Esse ipsum omnis maxime dicta?</i>
+            <a href="./events.html" class="btn" style="background: #c9a062; color: #fff;">View More</a>
+        </div>
+    </section>
+
+    <div class="borderr mb-3"></div>
+
+
+<section  class="py-5" id="guest" 
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+
+    <div class="container guest-house-section">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img src="./images/felipepelaquim-1qvUsVrKrMI-unsplash.jpg" 
+                     alt="Guest House" 
+                     class="guest-house-img">
+                <p class="img-caption">A perfect place to unwind and relax.</p>
+            </div>
+            <div class="col-md-6 guest-house-content">
+                <h3 class="guest-house-title" style="text-align: left;"><i class="fa fa-hotel"></i> Guest House</h3>
+                <p class="guest-house-text">
+                    Experience a peaceful retreat in our charming guest house, where comfort meets elegance. 
+                    Enjoy cozy rooms, friendly service, and a relaxing ambiance perfect for your getaway.
+                </p>
+                <i style="color: #cc8c2b;" class="py-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae laudantium dignissimos consectetur fuga, ex ab reiciendis voluptatum corporis a deleniti laborum, velit rerum neque non commodi dolor doloribus veritatis sed! Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, sequi!</i>
+                <button class="btn p-3" onclick="guestbook()" id="guestbook2">Book Guest House</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container"
+    data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+        <div class="borderr"></div>
+    <div class="row justify-content-around">
+        <div class="col-md-6 mb-4" style="border-right: 1px solid #cc8c2b;">
+            <div class="custom-card">
+                <video autoplay loop muted class="custom-card-img">
+                    <source src="./images/12350372-hd_1920_1080_24fps.mp4" type="video/mp4">
+                </video>
+                <div class="custom-card-body">
+                    <h5 class="custom-card-title">Grand Ballroom</h5>
+                    <p class="custom-card-text">Our Grand Ballroom is perfect for weddings, large conferences, and gala dinners. It features elegant decor, state-of-the-art audiovisual equipment, and can accommodate up to 500 guests.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="custom-card">
+                <video autoplay loop muted class="custom-card-img">
+                    <source src="./images/4433139-uhd_3840_2160_25fps.mp4" type="video/mp4">
+                </video>
+                <div class="custom-card-body">
+                    <h5 class="custom-card-title">Executive Meeting Room</h5>
+                    <p class="custom-card-text">Ideal for business meetings and presentations, our Executive Meeting Room offers a professional setting with modern amenities. It can host up to 20 participants and is equipped with video conferencing facilities.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4" >
+            <div class="custom-card">
+                <video autoplay loop muted class="custom-card-img">
+                    <source src="./images/8783210-hd_1920_1080_30fps.mp4" type="video/mp4">
+                </video>
+                <div class="custom-card-body">
+                    <h5 class="custom-card-title">Outdoor Terrace</h5>
+                    <p class="custom-card-text">Our Outdoor Terrace provides a beautiful setting for cocktail receptions, casual gatherings, and intimate celebrations. Surrounded by lush greenery, it offers a relaxing atmosphere for up to 100 guests.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="custom-card">
+                <video autoplay loop muted class="custom-card-img">
+                    <source src="./images/./event3.mp4" type="video/mp4">
+                </video>
+                <div class="custom-card-body">
+                    <h5 class="custom-card-title">Private Dining Room</h5>
+                    <p class="custom-card-text">Perfect for private dinners and small celebrations, our Private Dining Room offers an exclusive setting with personalized service. It can accommodate up to 15 guests and features a curated menu by our executive chef.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-5">
+        <h4>Contact Us for Bookings</h4>
+        <p>If you have any questions or would like to book an event space, please contact us at:</p>
+        <p><i class="fas fa-phone-alt"></i> +234 123 4567</p>
+        <p><i class="fas fa-envelope"></i> events@hotel.com
+        
+        </div>
+                
+    </div>
+
+    <div class="Guest container">
+        <div class="row my-2">
+          <div class="col-md-6">
+            <p>
+              Welcome to our cozy guest house, a perfect retreat for those looking to escape the hustle and bustle of city life. Nestled in a serene environment, our guest house offers a tranquil atmosphere, complemented by picturesque views of the surrounding landscape. Each room is thoughtfully designed to provide comfort and relaxation, with modern amenities to ensure a pleasant stay.
+    
+              Our guest house features spacious rooms with comfortable beds, en-suite bathrooms, and stylish décor. Guests can enjoy a variety of on-site facilities, including a swimming pool, a well-equipped gym, and beautifully landscaped gardens. Whether you're here for a weekend getaway or an extended stay, our attentive staff is dedicated to making your experience memorable.
+    
+              In addition to our on-site amenities, we offer a range of services to enhance your stay, such as daily housekeeping, complimentary breakfast, and free Wi-Fi throughout the property. We also provide convenient access to local attractions, dining options, and recreational activities, ensuring that you have everything you need for a delightful stay.
+    
+              Come and experience the charm and hospitality of our guest house. We look forward to welcoming you and making your stay truly unforgettable.
+            </p>
+            <div class="text-center mt-4">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <img src="./images/guestex.jpg" class="img-fluid" alt="Guest House Image">
+            <p class="caption text-center mt-2">Exterior view of the guest house</p>
+          </div>
+        </div>
+    
+        <div id="Guestatrri" class="my-5 section">
+            <div class="row">
+              <div class="col-md-4">
+               <img src="./images/swim.jpg" alt="" srcset="">
+                <p>Swimming Pool</p>
+              </div>
+              <div class="col-md-4">
+                <img src="./images/gym.jpg" alt="" srcset="">
+                <p>Well-equipped Gym</p>
+              </div>
+              <div class="col-md-4">
+                  <img src="./images/shower.jpg" alt="" srcset="">
+                  <p>24hrs water supply</p>
+              </div>
+              <div class="col-md-4">
+                <img src="./images/breakfast.jpg" alt="" srcset="">
+                <p>Complimentary Breakfast</p>
+              </div>
+              <div class="col-md-4">
+                <img src="./images/shuttle.jpg" alt="" srcset="">
+                <p>Airport Shuttle Service</p>
+              </div>
+              <div class="col-md-4">
+                <img src="./images/dryclean.jpg" alt="" srcset="">
+                <p>Laundry and Dry Cleaning</p>
+              </div>
+            </div>
+          </div>
+
+
+
+
+<section class="my-3" id="guest"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <div class="container gallery-section" id="galasec2">
+        <h2 class="gallery-title">Photos of the Guest house</h2>
+        <div class="gallery-container" id="guestcontainer">
+            <div class="gallery-item square item-1">
+                <img src="./images/bigroom1.jpg" alt="Square">
+            </div>
+            <div class="gallery-item circle item-2">
+                <img src="./images/bigroom2.jpg" alt="Circle">
+            </div>
+            <div class="gallery-item triangle item-3">
+
+            </div>
+            <div class="gallery-item square item-4">
+                <img src="./images/bigroom3.jpg" alt="Square">
+            </div>
+            <div class="gallery-item circle item-5">
+                <img src="./images/bigroom4.jpg" alt="Circle">
+            </div>
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <button class="view-more-btn" onclick="loadGallery('gallery2')">View More....</button>
+    </div>
+</section>
+
+
+
+          <div id="locationAttractions" class="section">
+            <h3>Location</h3><span></span>
+            <p>
+              Our guest house is located in a serene environment, offering easy access to local attractions such as [Local Attraction 1], [Local Attraction 2], and [Local Attraction 3]. Enjoy the beauty of the surrounding landscape and explore the nearby dining and recreational options.
+            </p>
+          </div>
+    
+          <button id="exploreButton" onclick="exploreButton()" class="btn" style="background-color: #cc8c2b; color: #fff;">Explore Our Guest House</button>
+     </div>
+    
+        
+    </section>
+
+
+<!-- Loader -->
+ <div id="pageload"></div>
+
+
+
+
+
+ <div id="#trigmeal">
+
+    <section id="hotel-restaurant" class="py-5"
+    data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+        <video autoplay loop muted class="restaurant-bg">
+            <source src="./images/resturantbg.mp4" type="video/mp4">
+        </video>
+
+    <!-- Overlay (Separate from the video) -->
+    <div class="restaurant-overlay"></div>
+
+       <div class="restpsec container">
+        <h1 class="text-center" style="font-style: italic; color: #cc8c2b;">More on Horizon Meals</h1>
+        <h6 class="pt-3">Our food is crafted with care and passion, using only the freshest ingredients to create mouthwatering dishes that are sure to satisfy every palate. Each meal is a celebration of flavor, offering a perfect balance of quality, taste, and creativity. Whether you're craving something comforting or adventurous, our menu is designed to bring you an unforgettable dining experience. Taste the difference, and let our food become your new favorite indulgence!</h6>
+    <div class="borderr"></div>   
+    </div>
+        <div class="restaurant-content container" id="restaurantC">
+            
+        </div>
+    </section>
+
+</div>
+
+
+
+    <section id="sustainability" class="container my-5"
+    data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+        <h2 class="text-center my-5">Our Commitment to Sustainability</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="custom-card">
+                    <img src="./images/pexels-cristian-rojas-8853502.jpg" alt="Sustainability 1" class="custom-card-img">
+                    <div class="custom-card-body">
+                        <h5 class="custom-card-title">Energy Conservation</h5>
+                        <p class="custom-card-text">We use energy-efficient lighting, appliances, and HVAC systems to minimize our energy consumption. Our hotel is powered by renewable energy sources, reducing our carbon footprint.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="custom-card">
+                    <img src="./images/pexels-markusspiske-2990639.jpg" alt="Sustainability 8" class="custom-card-img">
+                    <div class="custom-card-body">
+                        <h5 class="custom-card-title">Community Engagement</h5>
+                        <p class="custom-card-text">We are committed to engaging with and supporting the local community. Through partnerships with local organizations, we contribute to social and environmental initiatives that benefit the community.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="custom-card">
+                    <img src="./images/pexels-livier-garcia-645743-1459339.jpg" alt="Sustainability 4" class="custom-card-img">
+                    <div class="custom-card-body">
+                        <h5 class="custom-card-title">Sustainable Sourcing</h5>
+                        <p class="custom-card-text">We prioritize sourcing locally-produced and organic products for our restaurant and amenities. This supports local businesses and reduces our environmental impact.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <h4>Join Us in Our Sustainability Efforts</h4>
+            <p>We invite our guests to join us in our sustainability journey. Together, we can make a positive impact on the environment.</p>
+            <p>If you have any questions or would like to learn more about our initiatives, please contact us at:</p>
+            <p><i class="fas fa-phone-alt"></i> +234 123 4567</p>
+            <p><i class="fas fa-envelope"></i> sustainability@hotel.com</p>
+        </div>
+    </section>
+
+
+<div class="lightbox" id="lightbox"
+data-aos="fade-right"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <button class="close-btn" onclick="closeLightbox()">×</button>
+    <div class="lightbox-content">
+        <img id="lightbox-img" src="" alt="Full Size">
+    </div>
+</div>
+
+
+<div id="selected-room" class="text-center">
+    <i class="fa fa-xmark" id="mrright3" onclick="mrright3()"></i>
+    <h4 class="mb-3">You have selected: <span id="room-name"></span></h4>
+    <p>Price: <span id="room-price"></span> per night</p>
+    <button class="btn btn-success" onclick="confirmBooking()">Proceed to Payment</button>
+</div>
+
+<section
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+<div class="container my-5">
+    <h2 class="my-5">Special Offers And Discounts</h2>
+    <div class="borderr my-4"></div>
+    <div class="row justify-content-between">
+      <div class="col-md-4">
+        <img src="./images/hotel2.jpg" alt="Offer 6" class="offer-image">
+        <div class="offer-details">
+            <h3>Extended Stay Discount</h3>
+            <p>Stay longer and save more. Book a stay of 7 nights or more and enjoy a special discount. Includes complimentary breakfast and laundry service.</p>
+            <p style="color: #cc8c2b;">Call: +124567890</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <img src="./images/pexels-tatianasyrikova-3975635.jpg" alt="Offer 2" class="offer-image">
+        <div class="offer-details">
+            <h3>Weekend Escape</h3>
+            <p>Take a break this weekend with our special rate. Includes late checkout and free parking. Perfect for a quick getaway. Book now and enjoy a 15% discount!</p>
+            <p style="color: #cc8c2b;">Call: +124567890</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <img src="./images/pexels-cottonbro-4255484.jpg" alt="Offer 3" class="offer-image">
+        <div class="offer-details">
+            <h3>Romantic Retreat</h3>
+            <p>Surprise your loved one with a romantic stay. Package includes a candlelit dinner and a bottle of champagne. Book now and enjoy 10% off!</p>
+            <p style="color: #cc8c2b;">Call: +124567890</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <img src="./images/pexels-freestockpro-1008155.jpg" alt="Offer 3" class="offer-image">
+        <div class="offer-details">
+            <h3>Travel packages</h3>
+            <p>Coming from another country? Book now and enjoy 10% off!</p>
+            <p style="color: #cc8c2b;">Call: +124567890</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <img src="./images/pexels-rdne-5778222.jpg" alt="Offer 3" class="offer-image">
+        <div class="offer-details">
+            <h3>Business trip</h3>
+            <p>Planing a business trip? Book now and enjoy 30% off!</p>
+            <p style="color: #cc8c2b;">Call: +124567890</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <img src="./images/pexels-emma-bauso-1183828-2253879.jpg" alt="Offer 4" class="offer-image">
+        <div class="offer-details">
+            <h3>Family Fun Package</h3>
+            <p>Bring the whole family and enjoy a fun-filled vacation. Includes tickets to a local attraction and complimentary breakfast for the kids. Book now and save 15%!</p>
+            <p style="color: #cc8c2b;">Call: +124567890</p>
+        </div>
+    </div>
+  </div>
+  <a href="./whtweoffer.html" class="btn text-light" style="background: #cc8c2b; border: none;">More....</a>
+</section>
+
+
+<section id="more room-selection" 
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100" class="py-5">
+<div class="container">
+    <h2 class="text-center mb-4">Select the Standard room of your choice</h2>
+    <div class="row">
+    <div class="col-md-6">
+        <video autoplay loop muted class="blog-image">
+            <source src="./images/deluxe1.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="col-md-6">
+        <i class="mb-4" style="color: #c9a062;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem, 
+            quaerat, quia suscipit nobis modi error ducimus sit totam dicta eum quam
+             odit ex hic officia iste inventore maiores debitis doloribus.</i>
+             <i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem, 
+                quaerat, quia suscipit nobis modi error ducimus sit totam dicta eum quam
+                 odit ex hic officia iste inventore maiores debitis doloribus.</i>
+                 <i style="color: #c9a062;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem, 
+                    quaerat, quia suscipit nobis modi error ducimus sit totam dicta eum quam
+                     odit ex hic officia iste inventore maiores debitis doloribus.</i>
+                     <i>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem, 
+                        quaerat, quia suscipit nobis modi error ducimus sit totam dicta eum quam
+                         odit ex hic officia iste inventore maiores debitis doloribus.</i>
+                     <div class="mt-3">
+                        <button onclick="booknoww()" class="btn btn-lg m-2" style="color: #fff; width: 95%; background: #cc8c2b;">Book Now</button>
+                    </div>
+                    </div>
+</div>
+</div>
+</section>
+
+
+
+    <!-- Section 4: Events & Meetings -->
+    <section id="eventb"></section>
+
+
+
+<!-- Guest Reviews -->
+<section id="guest-reviews"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <div class="carousel">
+        <div class="carousel-item">
+            <img src="./images/pexels-mikhail-nilov-8871904.jpg" alt="Guest 1" class="guest-image">
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            <p>"The stay was absolutely fantastic. The service was impeccable and the rooms were very comfortable."</p>
+            <p>- Alex Johnson</p>
+        </div>
+        <div class="carousel-item">
+            <img src="./images/pexels-divinetechygirl-1181690.jpg" alt="Guest 2" class="guest-image">      
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <p>"A wonderful experience from start to finish. The amenities were top-notch and the staff was very friendly."</p>
+            <p>- Sarah White</p>
+        </div>
+        <div class="carousel-item">
+            <img src="./images/pexels-olly-3771807.jpg" alt="Guest 3" class="guest-image">
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p>"Highly recommend this hotel! The location is perfect and the view from our room was stunning."</p>
+            <p>- Michael Brown</p>
+        </div>
+    </div>
+</section>
+
+
+  <section id="blog"
+  data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <h2 class="mb-5">I  N  S  I  G  H  T  S</h2>
+
+<div class="row justify-content-evenly">
+<div class="col-md-5">
+    <img src="./images/pexels-kse91-30980752.jpg" 
+    alt="Blog Image" class="blog-image">
+</div>
+<div class="col-md-5">
+    <div class="blog-content">
+        <h3 style="color: #c9a062; padding: 10px;">Huge Welcome to Velvet Horizon!</h3>
+        <i>blanditiis libero? Sit voluptates, facilis magni quae dignissimos explicabo. Voluptates odio similique ea doloribus eaque maxime harum perspiciatis maiores voluptatibus sequi repellat qui magni vitae voluptatem tenetur omnis, ipsa veritatis officia! Veritatis tempora adipisci iure, dicta consequatur ut exercitationem quibusdam ipsa culpa porro neque? Doloremque unde sint neque incidunt architecto soluta aliquid explicabo? Quaerat porro sunt maiores culpa omnis pariatur odio eligendi facere laudantium quidem iusto error earum, ipsum corrupti modi, reprehenderit dolore molestias fuga nobis. Odio enim earum nobis necessitatibus animi. Ipsa consequuntur optio soluta distinctio amet temporibus ab adipisci nemo, quis porro architecto delectus ipsum a impedit itaque tenetur ipsam maiores numquam doloremque. Libero doloremque quod, vero eligendi ullam mollitia suscipit dolore necessitatibus pariatur fuga, enim recusandae tempore. Ipsum voluptatem id ducimus ea explicabo adipisci consequatur sint. Praesentium, consectetur. Maiores distinctio pariatur, voluptatum quae magnam, in quisquam eveniet, corporis nostrum mollitia repellat. Quo dicta perferendis sit. Nam necessitatibus aliquid delectus aperiam iste ullam. Officia quod sit eius debitis minus, eaque, dolore magnam itaque id fugiat suscipit accusantium a aliquam deleniti ratione voluptatum, facere sed corrupti doloremque omnis. Voluptas atque quas voluptatibus distinctio laboriosam expedita saepe dolore quaerat, voluptate quidem praesentium alias sed nihil at dolores a eaque voluptatem minus ea illo officiis, sunt, quia cupiditate. Iure id accusamus consequatur. Expedita consequuntur quibusdam suscipit, dolores quas inventore cum voluptates dolorum excepturi et, architecto omnis nihil? Doloremque aut nulla facere necessitatibus consectetur debitis! Minus autem commodi consectetur, sapiente eos amet laudantium iusto soluta voluptatum blanditiis dolor debitis enim unde repudiandae ex, quae accusantium minima.</i>
+    </div>
+    <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae dicta magni omnis nobis sunt quisquam ducimus optio! Natus aut labore laborum deserunt fuga ipsa est minus et? Amet est facilis, assumenda aliquam placeat unde ex quidem quam repudiandae aspernatur iste. Doloremque culpa quia ipsum error voluptate aut maxime consequatur nesciunt?</i>
+</div>
+
+<p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur inventore quasi, ad, error sint veritatis quae expedita, ullam quas totam enim fugit ea adipisci beatae fuga repudiandae laborum. Accusantium, eos reprehenderit eveniet ea officia eligendi iure. Ut molestias eius provident praesentium quos voluptates magni beatae atque ullam, nesciunt, esse distinctio odio officia repellendus nostrum explicabo fugit natus! Eius, quo quis? Sint quo vel fugiat animi accusamus, soluta eveniet fuga tempora nobis totam dolore cumque maxime eum optio pariatur commodi facilis hic dolor laudantium. Temporibus assumenda reprehenderit explicabo ut necessitatibus nam, veritatis magni deleniti rem ad harum, nisi ea est nemo tenetur minus enim. Quas, iste harum vitae quae quidem placeat, qui sit, nulla a asperiores aperiam ex corrupti. Consequuntur, delectus. Illo vel labore in sit cumque maiores mollitia dolorum harum a libero molestiae, dignissimos ad nobis, molestias iure accusamus aperiam dicta sapiente numquam et magnam. Error expedita natus explicabo dolorem.</p>
+</div>
+
+<div class="row justify-content-evenly">
+<div class="col-md-5">
+    <i> est laborum facilis pariatur fuga optio velit nesciunt temporibus soluta doloremque rem autem corrupti molestias et? Voluptatem laboriosam ipsam maiores quasi illo voluptatibus, perferendis deserunt, obcaecati rerum ea molestias. Exercitationem pariatur illum cum tempore cupiditate? Fugit, fuga nostrum non laborum minus obcaecati ex nisi tenetur atque voluptas exercitationem commodi ducimus itaque facilis laudantium mollitia nesciunt consequatur quas eos cupiditate maxime hic. Blanditiis facere nisi quaerat recusandae cupiditate necessitatibus numquam laudantium, error soluta ab.
+         Exercitationem blanditiis, expedita incidunt unde hic obcaecati magni soluta sequi temporibus laboriosam dolores reprehenderit impedit cum maiores voluptatem repellendus ex ratione, laborum dolorum voluptas cumque doloribus. Ullam blanditiis eum praesentium sunt eligendi veniam provident porro eius nemo. At, obcaecati! Consequuntur, culpa! Iusto harum ab nesciunt, inventore ut assumenda! Voluptate nemo corrupti debitis, vero magnam officia maxime in enim. Adipisci doloremque voluptatum rerum ipsum numquam nisi voluptate quae ab cumque nobis commodi earum totam qui, et dolore, quos distinctio fuga? Similique delectus repellendus veritatis consectetur, neque nostrum, accusamus laudantium debitis suscipit aut harum.Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est laborum saepe, ad quaerat, cum repellendus nisi, eligendi nulla quibusdam sequi explicabo culpa libero autem quod tenetur quam. Saepe quis blanditiis quas commodi voluptatum quisquam accusantium mollitia ea, inventore doloremque modi. Dicta aperiam ab tenetur molestiae error amet totam id dolorem?</i>
+</div>
+<div class="col-md-5 pt-5">
+    <video autoplay loop muted class="blog-image">
+        <source src="./images/13024314_3840_2160_60fps.mp4" type="video/mp4">
+    </video>
+    <i style="color: #c9a062;text-align: center; font-size: 25px;">Hotel at night</i>
+</div>
+</div>
+
+</section>
+
+<section id="about-ceo"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+
+    <div class="row justify-content-between">
+        <div class="col-md-5">
+        <img src="./images/pexels-zeynep-sude-emek-193601188-20451149.jpg" alt="CEO Photo"
+         class="rounded-image2">
+        </div>
+        <div class="col-md-5 mt-2">
+            <h3 style="color: #c9a062;">Welcome from Our CEO</h3>
+            <p>Message from the CEO about the hotel, vision, and updates.</p> 
+            <i>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora doloremque aperiam, sint cumque excepturi aspernatur quis illo nostrum, culpa omnis, est nemo provident alias! Atque vero exercitationem nisi minus cum ullam inventore, at reprehenderit praesentium ducimus alias animi rerum numquam illo, quae deserunt. Doloribus provident minima quia, veniam delectus similique deserunt incidunt perspiciatis exercitationem impedit earum at quas corporis doloremque aut a obcaecati, itaque dolore consectetur quod est libero quam aliquid reprehenderit! Laborum doloribus omnis a velit tempore soluta cumque odit, autem explicabo enim suscipit sit dicta numquam, minima iure veniam atque culpa voluptates sunt beatae quis molestiae? Nemo, laborum.</i> 
+        </div>
+    </div>
+    <p>Our CEO, <b style="color: #c9a062;">Rebecca Belucci</b>, has been leading the hotel with a vision to provide exceptional hospitality services. 
+        With over 20 years of experience in the industry,
+        John has transformed our hotel into a premier destination for travelers. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae dolores consectetur facere, labore atque ab animi ratione officiis? Corrupti molestias ipsa, vel reprehenderit, 
+        omnis earum dolorum deleniti ex iure, sequi beatae expedita quis vero aliquid eius ducimus ipsam quaerat. Fugiat accusamus, amet laudantium beatae, excepturi exercitationem iste tempore aliquid suscipit nulla dicta, ea aperiam porro vitae! Nam inventore rem debitis deleniti esse accusamus culpa corporis, non libero voluptatibus asperiores voluptatum aliquid. Itaque, aliquid ea? Sunt rerum corrupti voluptas delectus corporis excepturi nesciunt soluta omnis maxime voluptatem, illum atque in repudiandae? Ea necessitatibus officiis fugiat nam ullam neque? Natus sunt enim nemo laborum et minima vero perspiciatis, laboriosam voluptate at quae accusamus rerum distinctio ullam doloremque nesciunt magnam nisi asperiores non! Pariatur dolorem molestias officia, sunt veniam doloremque voluptates perferendis nulla harum obcaecati tenetur error, soluta beatae impedit. Facilis assumenda est laudantium quibusdam consectetur earum, minima doloremque facere eaque, quis amet quia ratione ducimus nesciunt maiores reiciendis officiis cupiditate nulla nobis veniam id. Est illo voluptatibus, 
+        quos itaque magnam in eveniet sunt eius nam delectus hic, veritatis, sed porro id eligendi iure cum. Eligendi optio, hic non corporis mollitia odio commodi minus a nesciunt expedita, ipsum minima perspiciatis, laudantium quidem eveniet!</p>
+</section>
+
+<section id="team"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+
+    <h2 class="my-5">Meet the Team</h2>
+    <i class="py-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam cupiditate velit sed a architecto neque blanditiis pariatur veritatis in aliquid consectetur eum rem alias, commodi ratione nostrum laboriosam ad! Dolore, voluptatibus recusandae nihil sit totam dicta similique eligendi veritatis, tenetur culpa odio voluptates? Delectus tempore eos eius dignissimos unde incidunt.</i>
+<div class="row justify-content-between mt-5">
+
+        <div class="team-member col-md-2">
+            <img src="./images/pexels-karolina-grabowska-8528851.jpg" alt="Team Member 1" class="rounded-image">
+            <i>Jane Smith</i>
+            <h5 style="color: #cc8c2b;">GENERAL MANAGER</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+    </div>
+        <div class="team-member col-md-2">
+            <img src="./images/pexels-chloekalaartist-1043473.jpg" alt="Team Member 3" class="rounded-image">
+            <i>Michael Brown</i>
+            <h5 style="color: #cc8c2b;">EXECUTIVE CHEF</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+    </div>
+    <div class="col-md-3">
+        <div class="team-member">
+            <img src="./images/pexels-cedric-fauntleroy-8154931.jpg" alt="Team Member 2" class="rounded-image">
+            <i>Emily Johnson</i>
+            <h5 style="color: #cc8c2b;">HEAD OF HOUSEKEEPING</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="team-member">
+            <img src="./images/pexels-mart-production-7644147.jpg" alt="Team Member 2" class="rounded-image">
+            <i>Elizabeth Dubois & Sarah Min</i>
+            <h5 style="color: #cc8c2b;">HEAD OF CUSTOMER SERVICES</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="team-member">
+            <img src="./images/pexels-linkedin-2182970.jpg" alt="Team Member 2" class="rounded-image">
+            <i>David Lee</i>
+            <h5 style="color: #cc8c2b;">GUEST SERVICE MANAGER</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="team-member">
+            <img src="./images/pexels-alaxmatias-28513051.jpg" alt="Team Member 2" class="rounded-image">
+            <i>John Stones</i>
+            <h5 style="color: #cc8c2b;">OPERATION MANAGERS</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="team-member">
+            <img src="./images/pexels-mizunokozuki-13801614.jpg" alt="Team Member 2" class="rounded-image">
+            <i>David Johnson</i>
+            <h5 style="color: #cc8c2b;">HEAD OF SECURITY</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="team-member">
+            <img src="./images/pexels-mikhail-nilov-7680196.jpg" alt="Team Member 2" class="rounded-image">
+            <i>Amber Lemay</i>
+            <h5 style="color: #cc8c2b;">CCONCIERGE</h5>
+            <div class="socials">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section id="history"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <h2>History</h2>
+    <p>Our hotel was founded on March 15, 1995. Since then, we have been committed to 
+        providing outstanding hospitality and memorable experiences for all our guests.
+         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim mollitia rem 
+         quasi, deserunt nostrum tempora quae repellat, corrupti ducimus placeat eos 
+         doloremque aspernatur ipsa soluta repellendus veniam, obcaecati dolorum 
+         molestias maxime voluptates sed eaque maiores officia nemo? Deleniti ullam, 
+         reiciendis aperiam consequuntur illum esse eius asperiores ea officiis 
+         veritatis, illo, facilis eum! Aspernatur ipsum ipsam dolorem voluptate 
+         illo ad consectetur, dolorum sunt sed maxime magni dolores eius velit autem 
+         hic inventore suscipit est soluta perferendis quae nesciunt, eos doloribus? 
+         Excepturi temporibus ut in doloremque vero magni officia atque. Iure dolores aliquam recusandae voluptas laborum odio aut praesentium ratione voluptatum, porro sed, vel fuga corporis. Debitis placeat ullam repudiandae, dolorum esse, suscipit ab doloribus ea unde excepturi aperiam iure consectetur perspiciatis perferendis corporis eaque vero quod repellat dolorem ipsa rerum a repellendus voluptatibus odit! Officiis minima tenetur aperiam eos exercitationem atque ullam minus nostrum doloremque corrupti eum, blanditiis cupiditate reiciendis facilis placeat, dolorem animi nesciunt dignissimos. Voluptates eveniet, eligendi, neque explicabo vero commodi praesentium at, laudantium repellendus quae reiciendis fuga? Exercitationem labore sequi impedit tenetur, a doloremque, perferendis ullam vitae nulla repellat sed at ex minus dolor magnam maiores excepturi quidem. Sapiente animi laboriosam quibusdam libero reiciendis voluptatum atque veniam illo quia culpa, beatae amet, porro magni mollitia hic ipsa doloribus nesciunt quasi nostrum pariatur. Totam obcaecati, reiciendis est cum nulla quae doloribus alias iusto porro quam, vero natus voluptatum provident, aperiam nesciunt quasi magni distinctio. Illo, cupiditate. Beatae harum, ut dolorem tempora in cupiditate sunt aliquid, consectetur repellendus, autem aliquam. Fugit totam asperiores autem, nam ullam illum minus consequuntur quo recusandae libero! Minima delectus esse magnam dignissimos inventore quasi, explicabo nemo itaque animi ullam odit cupiditate! Iusto, molestiae. Adipisci id quis fuga libero, neque in deleniti repellat praesentium totam minima veritatis
+         reiciendis hic vitae vero pariatur perferendis, aliquid suscipit provident.
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis optio unde amet. Esse, facere doloribus maiores tempore, unde doloremque repudiandae dolor, a mollitia necessitatibus quae autem et nisi id velit soluta eveniet totam? Consequuntur perferendis odit quaerat id maiores necessitatibus culpa magnam animi sapiente, officia rerum assumenda asperiores, quasi minus.</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi possimus placeat voluptates sed cum ea, at tempore amet nulla provident maxime, sint neque adipisci eaque deserunt odio voluptatibus velit temporibus.</p>
+    
+
+    <i style="color: #c9a062;text-align: center; font-size: 25px;">headquaters</i>
+
+    <video autoplay loop muted class="blog-image mt-5">
+        <source src="./images/13210103_2562_1440_60fps.mp4" type="video/mp4">
+    </video>
+    
+
+
+<p class="my-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae quod sit cupiditate, architecto id deleniti voluptate! Reiciendis, eum odio, qui voluptatibus inventore expedita dolorum at, provident consectetur impedit deserunt esse. Accusamus laudantium culpa sit commodi, cumque magni similique quis ipsum, nesciunt recusandae expedita officia voluptatibus animi at veniam perferendis totam aliquid quasi laboriosam quas! Dignissimos assumenda, atque eum consectetur fugit vero natus! Non quisquam qui natus quidem impedit quasi et saepe, tenetur praesentium consequatur at nulla sequi accusantium voluptates, itaque obcaecati soluta. Ipsam, placeat, earum a nobis et laudantium dolore nisi accusantium hic ex, ducimus nam quisquam esse voluptates magni!</p>
+
+    <div class="row justify-content-between mt-3">
+        <div class="col-md-5 text-center">
+<img src="./images/EPUCE9261.JPG" alt="" class="rounded-image">
+<b style="color: #c9a062;">Segun Michael</b>
+<h2 class="my-1 text-center">FOUNDER</h2>
+        </div>
+        <div class="col-md-5 text-center">
+            <img src="./images/pexels-moose-photos-170195-1036622.jpg" alt="" class="rounded-image">
+            <b style="color: #c9a062;">Sarah Parker</b>
+            <h2 class="my-1 text-center">CO-FOUNDER</h2>
+        </div>
+    </div>
+    
+    </section>
+
+
+
+
+    <section id="partners"
+    data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+        <h2>Partners</h2>
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-item2"><i class="fab fa-apple partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-microsoft partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-google partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-amazon partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-facebook partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-twitter partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-linkedin partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-uber partner-icon"></i></div>
+                <div class="carousel-item2"><i class="fab fa-airbnb partner-icon"></i></div>
+            </div>
+        </div>
+    </section>
+
+<section id="faq"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <h2>Frequently Asked Questions</h2>
+    <p class="my-1">Here are some frequenly asked questions </p>
+    <div class="faq-item">
+        <button class="faq-question">What time is check-in and check-out? <span class="dropdown-icon">&#9660;</span></button>
+        <div class="faq-answer">
+            <p>Check-in is at 3:00 PM and check-out is at 11:00 AM.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-question">Is parking available? <span class="dropdown-icon">&#9660;</span></button>
+        <div class="faq-answer">
+            <p>Yes, we offer complimentary parking for our guests.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-question">Do you offer airport shuttle service? <span class="dropdown-icon">&#9660;</span></button>
+        <div class="faq-answer">
+            <p>Yes, we provide complimentary airport shuttle service for our guests. Please contact the front desk for scheduling.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-question">Is Wi-Fi available in the rooms? <span class="dropdown-icon">&#9660;</span></button>
+        <div class="faq-answer">
+            <p>Yes, free Wi-Fi is available in all rooms and public areas of the hotel.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-question">Do you allow pets? <span class="dropdown-icon">&#9660;</span></button>
+        <div class="faq-answer">
+            <p>We are a pet-friendly hotel. A small fee may apply. Please refer to our pet policy for more details.</p>
+        </div>
+    </div>
+    <div class="faq-item">
+        <button class="faq-question">What are the dining options available at the hotel? <span class="dropdown-icon">&#9660;</span></button>
+        <div class="faq-answer">
+            <p>We have an on-site restaurant, a café, and room service available. Guests can enjoy a variety of dining options without leaving the hotel.</p>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section id="location"
+data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+    <h2>Velvet's Location</h2>
+    <p>Address: 123 Hotel Lane, Lagos, Nigeria</p>
+    <p>Phone: +234 123 4567</p>
+    <div class="map-container">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.01395639288!2d3.35955269007421!3d6.524379402348184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5074d8dd07d%3A0x3e819e46b6daff08!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1615813449392!5m2!1sen!2sng"
+            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+
+<div class="row my-3 justify-content-between attractions-list">
+<div class="col-md-3"><i class="fas fa-umbrella-beach"style="    color:#c9a062;
+    font-size: 20px;"></i><h5>Beachfront - 2 km</h5></div>
+<div class="col-md-3"><i class="fas fa-landmark"style="    color:#c9a062;
+    font-size: 20px;"></i><h5>Museum of Art - 1.5 km</h5></div>
+<div class="col-md-3"><i class="fas fa-shopping-cart"style="    color:#c9a062;
+    font-size: 20px;"></i><h5>Shopping Mall - 3 km</h5></div>
+<div class="col-md-3"><i class="fas fa-store"style="    color:#c9a062;
+    font-size: 20px;"></i><h5>Local Market - 0.5 km</h5></div>
+</div>
+
+</section>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+
+<section id="contacts">
+<div class="contactsdiv contact-section" id="contact">
+        <div class="contact-container"
+        data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+          <h2>Contact Us</h2>
+          <p>We'd love to hear from you! Reach out to us via any of the following channels.</p>
+          <p class="mb-2" style="color: aqua;"><b>Customer Service line is working from 5am-10pm</b></p>
+          <div class="contact-info">
+            <div class="info-item">
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:info@hotel.com">info@hotel.com</a>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-phone-alt"></i>
+              <a href="tel:+1234567890">+1 234 567 890</a>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>123 Luxury St, Beverly Hills, CA</span>
+            </div>
+          </div>
+      
+<div class="row mt-5">
+    <div class="col-md-5 justify-content-center align-self-center">
+        
+    <div class="social-icons">
+      <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+</div>
+
+<div class="col-md-6 text-center">
+            <div class="team-member">
+                <img src="./images/pexels-mart-production-7644147.jpg" style="border-radius: 100px;" height="160px" width="110px" alt="Team Member 2" class="rounded-image">
+                <i>Elizabeth Dubois & Sarah Min</i>
+                <h5 style="color: #cc8c2b;">HEAD OF CUSTOMER SERVICES</h5>
+                <div class="socials">
+                    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+        </div>
+        
+</div>
+</section>
+
+<div id="footer-section"></div>
+
+
+</div>    
+
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+    AOS.init();
+  </script>
+<script src="./script.js"></script>
+<script src="./bootstrap/js/jquery.min.js"></script>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

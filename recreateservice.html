@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Horizon Relaxation Hotel & Spa</title>
+    <link rel="icon" href="./images/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack SDK -->
+</head>
+
+<!--  -->
+
+<div class="text-center" id="paycon">
+    <i class="fa fa-xmark mright" id="mrright2" onclick="mrright2()"></i>
+    <h2 class="py-3">Confirm Payment</h2>
+<div class="borderr"></div>
+    <p id="errormsg" style="display: none; padding: 10px 10px; color: rgb(218, 72, 72); font-weight: 600;"></p>
+
+    <form id="payment-form">
+        <div class="mb-3"> 
+            <label class="form-label">Full Name</label>
+            <input type="text" id="full-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Confirm Email</label>
+            <input type="email" id="emailC" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Amount (₦)</label>
+            <input id="amount" type="text" style="color:green;" class="form-control" readonly required>
+        </div>
+        
+        <button type="button" onclick="payWithPaystack()" class="btn w-100" style="background-color: #cc8c2b; color: #fff;">Pay Now</button>
+    </form>
+    <p id="payment-response" class="mt-3"></p>
+</div>
+
+<div class="gorr text-center" id="gorr">
+    <div class="container gorrC">
+        <i class="fa fa-xmark mright" id="mrrr" onclick="mrright4()" style="color: #c9a062;"></i>
+        <div class="">
+            <h1 class="gorrp" style="color: #fff;">Select your Preferred Choice</h1>
+            <div class="borderr"></div>
+            <div class="gorG">
+                <!-- Standard Room -->
+                <div class="gorrD standard-room" onclick="soption()" id="soption" style="cursor: pointer;">
+                    <img src="./images/hotelbg1.jpg" class="img-fluid" alt="Standard Room">
+                    <h3 class="my-2">Standard Room</h3>
+                    <p class="my-2" style="color: #c9a062;">Experience comfort and elegance with modern amenities and stylish decor for your perfect stay. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quae cumque laborum at similique. Sapiente optio velit architecto, iste odio excepturi quas labore libero a pariatur molestias placeat quasi officiis.</p>
+                    <button class="btn book-btn btn-secondary standard-btn" onclick="soption()">Book</button>
+                </div>
+
+                <!-- Guest House -->
+                <div class="gorrD goption guest-house" onclick="guestbook()" id="guestbook" style="cursor: pointer;">
+                    <img src="./images/pexels-amar-saleem-15661-70441.jpg" class="img-fluid" alt="Guest House">
+                    <h3 class="my-2">Guest House</h3>
+                    <p class="my-2">A luxurious getaway with spacious rooms, premium facilities, and a home-like ambiance for relaxation. Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro veniam est aut assumenda quibusdam suscipit, ducimus doloribus maxime aliquid. Molestiae fugit provident asperiores non quidem nemo vero nesciunt a sed.</p>
+                    <button class="btn book-btn btn-light guest-btn" onclick="guestbook()">Book</button>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="notsuccess bg-dark" id="notsuc">
+        <i class="fa fa-xmark mright" id="mrright" onclick="mrright()"></i>
+    <div class="notcon text-center">
+        <h2>Transaction not successful, Try again?</h2>
+        <img src="favicon-32x32.png" srcset="">
+    </div>
+    </div>
+<section id="standarddiv" class="py-5">
+    <div class="standardd">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+            <h2 class="text-center my-4">Select the Standard room of your choice</h2>
+            <div id="room-container" class="room-grid">
+        
+            </div>
+            <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+    </div>
+    </div>
+    </section>
+    <div id="guestHouseSection">
+        <div class="container">
+            <i class="fas fa-arrow-left" id="closeButton" onclick="closeButton()" style="font-size: 35px;cursor: pointer; padding-top: 10px;" id="mrright" onclick=""></i>
+              <div id="guestHouseContent" class="mt-5">
+                <h2 class="text-center my-4">Which do you prefer?</h2>
+                  <div class="room-grid" id="guests">
+
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <button id="closeButton" onclick="closeButton()" class="btn btn-lg"><i class="fas fa-arrow-left" style="padding-right: 10px;"></i>Back</button>
+              </div>
+            </div>
+      </div>
+      <div id="selected-room" class="text-center">
+        <i class="fa fa-xmark" id="mrright3" onclick="mrright3()"></i>
+        <h4 class="mb-3">You have selected: <span id="room-name"></span></h4>
+        <p>Price: <span id="room-price"></span> per night</p>
+        <button class="btn btn-success" onclick="confirmBooking()">Proceed to Payment</button>
+    </div>
+<!--  -->
+
+
+<body>
+<!-- Loader -->
+<div id="pageload"></div>
+
+<div id="navbardis"></div>
+
+<div id="allb">
+<section id="divsContainer"></section>
+
+
+    <!-- Hero Section -->
+    <section class="hero bg-dark">
+        <h1>Experience Our Recreational Services</h1>
+        <p>Unwind, Play, and Enjoy Luxury at Velvet Horizon Hotels.</p>
+        <div class="borderr"></div>
+    </section>
+
+    <!-- Section 1: Pool & Spa -->
+    <!-- <section class="recreation-section" id="creation">
+        <h2 style="color: #fff;">Pool & Spa</h2>
+        <i class="py-3" style="color: #cc8c2b;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur pariatur doloremque debitis maxime quisquam eligendi fugiat repellat voluptatem ipsam vero.</i>
+        <div class="borderr"></div>
+        <div class="recreation-cards">
+            <div class="cardd">
+                <img src="./images/swim.jpg" width="100%" alt="Pool">
+                <h3>Infinity Pool</h3>
+                <p>Relax by the pool with scenic views and premium service.</p>
+            </div>
+            <div class="cardd">
+                <img src="./images/spa.jpg" width="100%" alt="Spa">
+                <h3>Spa & Wellness</h3>
+                <p>Rejuvenate with our signature spa treatments and massages.</p>
+            </div>
+        </div>
+    </section> -->
+
+
+            
+          <div class="slider owl-carousel">
+            <div class="cardd">
+              <div class="img">
+                <img src="./images/spa2.jpg" alt="Spa">
+            </div>
+      <div class="content">
+                <div class="title">
+                    <h3>Spa & Wellness</h3>
+                </div>
+      </div>
+      </div>
+      
+       <div class="cardd">
+              <div class="img">
+      <img src="./images/swim.jpg" alt=""></div>
+      <div class="content">
+        <div class="title">
+            <h3>Swimming Pool</h3>
+        </div>
+      </div>
+      </div>
+       <div class="cardd">
+              <div class="img">
+      <img src="./images/resturant2.jpg" alt=""></div>
+      <div class="content">
+        <div class="title">
+            <h3>Exclusive Lounge & Bar</h3>
+        </div>
+      </div>
+      </div>
+      <div class="cardd">
+        <div class="img">
+<img src="./images/gymm.jpg" alt=""></div>
+<div class="content">  
+  <div class="title">
+    <h3>Gymnasium</h3>
+  </div>
+</div>
+</div>
+<div class="cardd">
+    <div class="img">
+<img src="./images/kids.jpg" alt=""></div>
+<div class="content">  
+<div class="title">
+    <h3>Kids’ Play Area</h3>
+</div>
+</div>
+</div>
+      </div>
+
+
+      <div id="#trigmeal">
+
+        <section id="hotel-restaurant" class="py-5"
+        data-aos="fade-up"
+    data-aos-easing="linear"
+    data-aos-duration="1100">
+            <video autoplay loop muted class="restaurant-bg">
+                <source src="./images/resturantbg.mp4" type="video/mp4">
+            </video>
+    
+        <!-- Overlay (Separate from the video) -->
+        <div class="restaurant-overlay"></div>
+    
+           <div class="restpsec container">
+            <h1 class="text-center" style="font-style: italic; color: #cc8c2b;">Meal section</h1>
+            <h6 class="pt-3">Our food is crafted with care and passion, using only the freshest ingredients to create mouthwatering dishes that are sure to satisfy every palate. Each meal is a celebration of flavor, offering a perfect balance of quality, taste, and creativity. Whether you're craving something comforting or adventurous, our menu is designed to bring you an unforgettable dining experience. Taste the difference, and let our food become your new favorite indulgence!</h6>
+        <div class="borderr"></div>   
+        </div>
+            <div class="restaurant-content container" id="restaurantC">
+                
+            </div>
+        </section>
+    
+    </div>
+
+      <section class="offers-section dining container"
+      data-aos="fade-up"
+  data-aos-easing="linear"
+  data-aos-duration="1100">
+          <h2 class="py-2">Velvet's Gym</h2>
+          <div class="borderr"></div>
+          <div class="dining-card">
+              <img src="images/gymm.jpg" width="50%" alt="Fine Dining">
+              <div class="dining-text">
+                  <p>Enjoy world-class cuisines prepared by expert chefs in a serene ambiance.</p>
+                  <i class="py-2" style="color: #cc8c2b;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut magni totam reiciendis perferendis inventore earum quas iste dolorum suscipit incidunt! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum sint libero possimus et, saepe molestias cumque incidunt iusto voluptatum commodi? Hic obcaecati temporibus molestias doloremque repellendus voluptate modi illo adipisci aspernatur natus repellat dolorem, iste a! Enim rerum impedit molestias animi magnam. Quia atque fugit at esse laboriosam dicta error.Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, nisi assumenda dolore libero officiis illo. Aperiam commodi delectus quibusdam impedit! Nisi, eveniet est! Nulla architecto, repudiandae veritatis a ad cum!</i>
+  <h5 class="py-3" style="color: #cc8c2b;">Opening Hours 5am-10pm</h5>
+              </div>
+          </div>
+      </section>
+
+    <!-- Section 3: Sports & Activities -->
+    <section class="offers-section spa"
+    data-aos="fade-up"
+data-aos-easing="linear"
+data-aos-duration="1100">
+        <h2>Out door Sports</h2>
+        <div class="borderr"></div>
+        <div class="spa-grid">
+            <div class="spa-item spa-item1">
+                <img src="images/football.jpg" width="70%" alt="Spa">
+                <h3 class="py-3">7 aside Football picth</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, expedita.</p>
+            </div>
+            <div class="spa-item">
+                <img src="images/tennis.jpg" width="70%" alt="Gym">
+                <h3 class="py-3">Tennis court</h3>
+                <p>Lorem ipsum dolor sitg elit. Maiores aspernatur impedit et exercitationem.Recusandae!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Kids' Entertainment -->
+    <section class="recreation-section">
+        <h2>Fun for Kids</h2>
+        <div class="borderr"></div>
+        <div class="recreation-cards">
+            <div class="cardd">
+                <img src="images/kids.jpg" style="max-width: 500px;" alt="Kids Zone">
+                <h3>Kids’ Play Area</h3>
+                <p>Safe and fun-filled activities designed for children of all ages.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Section 4: Events & Meetings -->
+    <section id="eventb"></section>
+
+    <!-- Section 5: Video Showcase -->
+    <section class="video-section">
+        <h2>Experience Our Recreational Services</h2>
+        <div class="borderr"></div>
+        <div class="video-container" style="color: #cc8c2b;">
+            <div style="border-right: 1px solid #cc8c2b; padding: 10px;">
+                <video controls>
+                    <source src="./images/swimming.mp4" type="video/mp4">
+                </video>
+                <p>Enjoy the serenity of our infinity pool.</p>
+            </div>
+            <div>
+                <video controls>
+                    <source src="./images/football.mp4" type="video/mp4">
+                </video>
+                <p>Get flexible with our Sports Events.</p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <div id="footer-section"></div>
+    </div>
+        <!--  -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+        <script src="https://js.paystack.co/v1/inline.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+  </script>
+<script src="./script.js"></script>
+<script src="./bootstrap/js/jquery.min.js"></script>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+<script>
+    
+</script>
+
+</body>
+</html>
+
